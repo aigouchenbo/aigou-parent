@@ -1,0 +1,22 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: AIGOU-ZUUL-GATEWAY
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+  instance:
+    #为当前服务器添加实例的标识
+    instance-id: aigou-zuul-gateway-9527.com
+    prefer-ip-address: true
+zuul:
+  #用*来通配符，忽略从9527端口通过服务名来调用
+  ignored-services: "*"
+  #这是所有路径的前缀
+  prefix: "/services"
+  routes:
+    plat:
+      path: /plat/**
+      service-id: aigou-plat
