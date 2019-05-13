@@ -3,56 +3,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>aigou-plat-parent</artifactId>
+        <artifactId>aigou-parent</artifactId>
         <groupId>cn.itsource</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>plat-service</artifactId>
+    <artifactId>aigou-config-server</artifactId>
 
     <dependencies>
-
-        <!--interface的依赖，interface依赖了basic-util的，所以该模块间接依赖了util-->
-        <dependency>
-            <groupId>cn.itsource</groupId>
-            <artifactId>plat-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!--springboot的web支持-->
+        <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!--eureka客户端的支持-->
+        <!--erueka客户端-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
-        <!--swaggger的支持-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-
-        <!--配置中心客户端-->
+        <!--configserver-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
+            <artifactId>spring-cloud-config-server</artifactId>
         </dependency>
+
 
     </dependencies>
 
-    <!--springboot的插件-->
     <build>
         <plugins>
             <plugin>
