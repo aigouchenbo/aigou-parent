@@ -2,7 +2,9 @@ package cn.itsource.aigou.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
+@TableName("user")
 public class User {
 
     private static final long serialVersionUID=1L;
@@ -10,7 +12,7 @@ public class User {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String name;
+    private String username;
 
     private String password;
 
@@ -22,12 +24,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -42,7 +44,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("分布式购物系统")
                 .description("购物系统接口文档说明")
-                .contact(new Contact("solargen", "", "lishugen@itsoruce.cn"))
+                .contact(new Contact("aigouchenbo", "", "aigouchenbo@itsoruce.cn"))
                 .version("1.0")
                 .build();
     }
