@@ -1,12 +1,17 @@
 package cn.itsource.aigou.service.impl;
 
+import cn.itsource.aigou.client.RedisClient;
+import cn.itsource.aigou.client.TemplateClient;
 import cn.itsource.aigou.domain.ProductType;
 import cn.itsource.aigou.mapper.ProductTypeMapper;
 import cn.itsource.aigou.service.IProductTypeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.alibaba.fastjson.JSONArray;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +28,72 @@ import java.util.Map;
 @Service
 public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, ProductType> implements IProductTypeService {
 
+    @Autowired
+    private RedisClient redisClient;
+    @Autowired
+    private TemplateClient templateClient;
+
     @Override
     public List<ProductType> loadTreeData() {
 //        return loadDataTree(0L);
         return loadDataTree();
+    }
+
+    @Override
+    public void createStaticPage() {
+        String templatePath = "E:\\IDEA\\workspace\\aigou-parent\\aigou-product-parent\\product-service\\src\\main\\resources\\template\\product.type.vm";
+        String targetPath = "E:\\IDEA\\workspace\\aigou-parent\\aigou-product-parent\\product-service\\src\\main\\resources\\template\\product.type.vm.html";
+        List<ProductType> productTypes = loadDataTree();
+        Map<String,Object> map = new HashMap<>();
+        map.put("model",productTypes);
+        map.put("templatePath",templatePath);
+        map.put("targetPath",targetPath);
+        templateClient.createStaticPage(map);
+
+        templatePath = "E:\\IDEA\\workspace\\aigou-parent\\aigou-product-parent\\product-service\\src\\main\\resources\\template\\home.vm";
+        targetPath = "E:\\IDEA\\workspace\\aigou-web-parent\\ecommerce\\home.html";
+        Map<String,Object> model = new HashMap<>();
+        map = new HashMap<>();
+        model.put("staticRoot","E:\\IDEA\\workspace\\aigou-parent\\aigou-product-parent\\product-service\\src\\main\\resources\\");
+        map.put("model",model);
+        map.put("templatePath",templatePath);
+        map.put("targetPath",targetPath);
+        templateClient.createStaticPage(map);
+    }
+
+    @Override
+    public boolean save(ProductType entity) {
+        //先执行保存
+        boolean result = super.save(entity);
+        sychornizedOperate();
+        return result;
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        boolean result = super.removeById(id);
+        sychornizedOperate();
+        return result;
+    }
+
+    @Override
+    public boolean updateById(ProductType entity) {
+        boolean result = super.updateById(entity);
+        sychornizedOperate();
+        return result;
+    }
+
+
+    private void updateRedis(){
+        List<ProductType> productTypes = loadDataTree();
+        //转成json字符串缓存到redis中
+        String jsonString = JSONArray.toJSONString(productTypes);
+        redisClient.set("productTypes",jsonString);
+    }
+
+    public void sychornizedOperate(){
+        updateRedis();
+        loadDataTree();
     }
 
     /**
