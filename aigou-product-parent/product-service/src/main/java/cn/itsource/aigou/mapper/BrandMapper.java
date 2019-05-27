@@ -9,6 +9,9 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * <p>
  * 品牌信息 Mapper 接口
@@ -22,4 +25,6 @@ public interface BrandMapper extends BaseMapper<Brand> {
     IPage<Brand> selectByQuery(Page<Brand> page, @Param("query") BrandQuery query);
 
     IPage<Brand> selectByWrapper(Page<Brand> page,@Param(Constants.WRAPPER) Wrapper wrapper);
+
+    void batchDeleteByPrimaryKeys(List<? extends Serializable> ids);
 }

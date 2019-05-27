@@ -1,5 +1,6 @@
 package cn.itsource.aigou.controller;
 
+import cn.itsource.aigou.service.IProductService;
 import cn.itsource.aigou.service.IProductTypeService;
 import cn.itsource.aigou.domain.ProductType;
 import cn.itsource.aigou.query.ProductTypeQuery;
@@ -11,11 +12,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductTypeController {
     @Autowired
     public IProductTypeService productTypeService;
+    @Autowired
+    private IProductService productService;
+
+    /**
+     * 加载面包屑
+     * @param productTypeId
+     * @return
+     */
+    @GetMapping("/productType/crumb")
+    public List<Map<String,Object>> loadCrumbs(Long productTypeId){
+        return productService.loadCrumbs(productTypeId);
+    }
 
     /**
     * 保存和修改公用的
@@ -105,4 +119,10 @@ public class ProductTypeController {
             return AjaxResult.me().setSuccess(false).setMessage("创建失败");
         }
     }
+
+    @GetMapping("/productType/path")
+    public String path(@RequestParam("id")Long id){
+        return productTypeService.getPathById(id);
+    }
+
 }

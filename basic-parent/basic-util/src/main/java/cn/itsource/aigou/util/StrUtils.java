@@ -22,6 +22,18 @@ public class StrUtils {
         return null;
     }
 
+    /**
+     * 把点号分隔的字符串转换字符串数组
+     *
+     * @param str
+     * @return
+     */
+    public static String[] splitStr2StrArr(String str,String str2) {
+        if (str != null && !str.equals("")) {
+            return str.split(str2);
+        }
+        return null;
+    }
 
     /**
      * 把逗号分隔字符串转换List的Long
@@ -32,12 +44,26 @@ public class StrUtils {
     public static List<Long> splitStr2LongArr(String str) {
         String[] strings = splitStr2StrArr(str);
         if (strings == null) return null;
-
         List<Long> result = new ArrayList<>();
         for (String string : strings) {
             result.add(Long.parseLong(string));
         }
+        return result;
+    }
 
+    /**
+     * 把点号分隔字符串转换List的Long
+     *
+     * @param str
+     * @return
+     */
+    public static List<Long> splitStr2LongArr(String str,String str2) {
+        String[] strings = splitStr2StrArr(str,str2);
+        if (strings == null) return null;
+        List<Long> result = new ArrayList<>();
+        for (String string : strings) {
+            result.add(Long.parseLong(string));
+        }
         return result;
     }
 

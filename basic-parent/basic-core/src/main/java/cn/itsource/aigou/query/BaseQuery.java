@@ -1,4 +1,4 @@
-package cn.itsource.aigou.auery;
+package cn.itsource.aigou.query;
 
 public class BaseQuery {
 

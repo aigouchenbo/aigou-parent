@@ -5,10 +5,12 @@ import cn.itsource.aigou.client.TemplateClient;
 import cn.itsource.aigou.domain.ProductType;
 import cn.itsource.aigou.mapper.ProductTypeMapper;
 import cn.itsource.aigou.service.IProductTypeService;
+import cn.itsource.aigou.util.StrUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 
 import java.io.Serializable;
@@ -35,8 +37,21 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
 
     @Override
     public List<ProductType> loadTreeData() {
-//        return loadDataTree(0L);
-        return loadDataTree();
+//先从redis中获取
+        String productTypesStr = redisClient.get("productTypes");
+        if(StringUtils.isEmpty(productTypesStr)){
+            //从数据库中查询
+            //使用循环
+            List<ProductType> productTypes = loadDataTree();
+            //存到redis中
+            String jsonString = JSONArray.toJSONString(productTypes);
+            redisClient.set("productTypes",jsonString);
+            //返回
+            return productTypes;
+        }
+        //转换成List
+        List<ProductType> productTypes = JSONArray.parseArray(productTypesStr, ProductType.class);
+        return productTypes;
     }
 
     @Override
@@ -59,6 +74,12 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
         map.put("templatePath",templatePath);
         map.put("targetPath",targetPath);
         templateClient.createStaticPage(map);
+    }
+
+    @Override
+    public String getPathById(Long id) {
+        ProductType productType = baseMapper.selectById(id);
+        return productType.getPath();
     }
 
     @Override

@@ -5,6 +5,10 @@ import cn.itsource.aigou.query.BrandQuery;
 import cn.itsource.aigou.util.PageList;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 品牌信息 服务类
@@ -16,4 +20,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IBrandService extends IService<Brand> {
 
     PageList<Brand> getByQuery(BrandQuery query);
+
+    void batchDeleteByIds(List<? extends Serializable> ids);
+
+    Map<String,Object> loadByPrductTypeId(Long productTypeId);
 }

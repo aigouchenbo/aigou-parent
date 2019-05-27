@@ -54,4 +54,11 @@
         ${ew.customSqlSegment}
     </select>
 
+    <delete id="batchDeleteByPrimaryKeys" parameterType="list">
+        delete from t_brand where id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

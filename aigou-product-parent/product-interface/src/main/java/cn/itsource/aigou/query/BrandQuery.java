@@ -1,7 +1,5 @@
 package cn.itsource.aigou.query;
 
-import cn.itsource.aigou.auery.BaseQuery;
-
 /**
  *
  * @author chenbo
